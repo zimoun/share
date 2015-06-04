@@ -1,4 +1,10 @@
 
+
+
+- - -
+Previously written
+- - -
+
 Because at some point, we would like to note e.g. the matvec by `A*x`,
 then, `C++` (and the simple operator overloading) seems better than
 pure `C`.
@@ -131,7 +137,7 @@ Kind of EFIE with 2 circles (C1 and C2)
 ---------------------------
 
   1. Full way
-    
+  	 	 ```cpp    
          int main(int argc, char *argv[])
          {
 
@@ -151,10 +157,10 @@ Kind of EFIE with 2 circles (C1 and C2)
          // post-processing
          // to clarify too
          }
-
+		 ```
 
   2. per circle
-
+  	 	``` cpp
         int main(int argc, char *argv[])
         {
 
@@ -187,7 +193,7 @@ Kind of EFIE with 2 circles (C1 and C2)
         // post-processing
         // to clarify too
         }
-
+		```
 
 
 Explanations about mechanism (of `BMatrix` and not about `singleLayer_`)
