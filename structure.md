@@ -72,7 +72,7 @@ preconditioner, the rebuilding is avoided.
 the `Matrix`]
 
 
-`Matrix and `Vector`
+`Matrix` and `Vector`
 ------------------
 
 `Mat` needs to be encapsulated into a class, in order to
