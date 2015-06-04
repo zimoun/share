@@ -137,27 +137,26 @@ Kind of EFIE with 2 circles (C1 and C2)
 ---------------------------
 
   1. Full way
-  	 	 ```cpp    
-         int main(int argc, char *argv[])
-         {
+```cpp    
+int main(int argc, char *argv[])
+{
 
-         Interface geom; // contains C1 and C2
-         BMatrix bV;
-         Matrix V;
-         Vector e;
+Interface geom; // contains C1 and C2
+BMatrix bV;
+Matrix V;
+Vector e;
 
-         b = rhs...  // to clarify
+b = rhs...  // to clarify
 
-         bV = singleLayer_Fourier(geom, geom, params);
-         V = bV.assemb();
+bV = singleLayer_Fourier(geom, geom, params);
+V = bV.assemb();
 
-         x = gmres(V, b, params);
-         // or x = direct(V, b); i.e. x = V\b; if the overload is possible
-
-         // post-processing
-         // to clarify too
-         }
-		 ```
+x = gmres(V, b, params);
+// or x = direct(V, b); i.e. x = V\b; if the overload is possible
+// post-processing
+// to clarify too
+}
+```
 
   2. per circle
   	 	``` cpp
