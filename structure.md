@@ -1,8 +1,5 @@
-
-
-
 - - -
-Previously written
+...   Previously written (deprecated)
 - - -
 
 Because at some point, we would like to note e.g. the matvec by `A*x`,
@@ -13,7 +10,7 @@ Kind of Problem
 ===============
 
 Let N items, such as disks.
-Therefore, N+1 domains are considered: 
+Therefore, N+1 domains are considered:
 
  + N interior domains
  +  one exterior domain
@@ -21,7 +18,7 @@ Therefore, N+1 domains are considered:
 Note that the N interior domains should be *empty*.
 
 In other words, in any case, let N *interfaces*.
-And then we would like to solve a BIE 
+And then we would like to solve a BIE
 (BIE means an weak formulation based on BIO).
 
 Objects (core)
@@ -42,7 +39,7 @@ and if you dive a bit, then it is close to `bem++`.
 `Interface` / `DofHandler`
 -------------------------
 
-An *interface* represents the geometrical interface, 
+An *interface* represents the geometrical interface,
 so it contains sort of parametrization etc.
 [**TODO**: think how to ? keep in mind mesh?]
 
@@ -55,15 +52,15 @@ Roughly speaking, it is a list (bijection) between the *modes*
 (test/trial function) and the unknowns (more or less vector indexes)
 
     [-M,..., -1, 0, 1,..., M] <-> [0, 1,..., 2M+1]
-            
-more maybe some metadata. 
+
+more maybe some metadata.
 The key point of the `DofHandler` is to manage the so prone error indexing.
 
 
 `TaskHandler`
 ------------
 
-It is an independant part and it could contain a dictionnary 
+It is an independant part and it could contain a dictionnary
 between the interface index and the processus (`MPI rank`).
 
 The default mapping could be: one interface per processus.
@@ -106,7 +103,7 @@ The basic use should be
     bA = BMatrix(params);
     A = pA.assemb();
 
-with `bA` is a pointer and `A` is of the type `Matrix` 
+with `bA` is a pointer and `A` is of the type `Matrix`
 
 `BMatrix` has some methods such that `addBlock`
 And the method `assemb` lunches the building.
@@ -137,7 +134,8 @@ Kind of EFIE with 2 circles (C1 and C2)
 ---------------------------
 
   1. Full way
-```cpp    
+
+~~~cpp
 int main(int argc, char *argv[])
 {
 
@@ -156,43 +154,44 @@ x = gmres(V, b, params);
 // post-processing
 // to clarify too
 }
-```
+~~~
 
   2. per circle
-  	 	``` cpp
-        int main(int argc, char *argv[])
-        {
 
-        Interface geom[2]; 
+~~~cpp
+int main(int argc, char *argv[])
+{
 
-        BMatrix bVV;
-        Matrix VV;
-        Vector e;
+Interface geom[2];
 
-        C1 = geom[0];
-        C2 = geom[1];
+BMatrix bVV;
+Matrix VV;
+Vector e;
+
+C1 = geom[0];
+C2 = geom[1];
 
 
-        bV11 = singleLayer_Fourier(C1, C1, params);
-        bV12 = singleLayer_Fourier(C1, C2, params);
-        bV21 = singleLayer_Fourier(C2, C1, params);
-        bV22 = singleLayer_Fourier(C2, C2, params);
+bV11 = singleLayer_Fourier(C1, C1, params);
+bV12 = singleLayer_Fourier(C1, C2, params);
+bV21 = singleLayer_Fourier(C2, C1, params);
+bV22 = singleLayer_Fourier(C2, C2, params);
 
-        bVV.addBlock( (0, 0), bv11); 
-        bVV.addBlock( (0, 1), bv12); 
-        bVV.addBlock( (1, 0), bv21);
-        bVV.addBlock( (1, 1), bv22);
+bVV.addBlock( (0, 0), bv11);
+bVV.addBlock( (0, 1), bv12);
+bVV.addBlock( (1, 0), bv21);
+bVV.addBlock( (1, 1), bv22);
 
-        VV = bVV.assemb();
+VV = bVV.assemb();
 
-        b = rhs...  // to clarify
-        x = gmres(VV, b, params);
-        // or x = direct(VV, b); i.e. x = VV\b; if the overload is possible
+b = rhs...  // to clarify
+x = gmres(VV, b, params);
+// or x = direct(VV, b); i.e. x = VV\b; if the overload is possible
 
-        // post-processing
-        // to clarify too
-        }
-		```
+// post-processing
+// to clarify too
+}
+~~~
 
 
 Explanations about mechanism (of `BMatrix` and not about `singleLayer_`)
@@ -212,5 +211,3 @@ Moreover, the four `addBlock` do nothing, except fill the values for
 the PETSc block `Mat`, such that the indexes etc.
 Then `assemb` uses the PETSc functionnality of this block `Mat` to
 distribute etc.
-
-
