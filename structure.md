@@ -237,28 +237,6 @@ Note that how it is splitted between `TaskHandler` and `Operator` is
 not fully clear right now.
 
 
-`Matrix` / `Vector`
-==================
-
-`Mat` / `Vec` needs to be encapsulated into a class, in order to
-overload some basic arithmetic operation as `A*x`
-
-Basically, these objects are the matrix and the vector of PETSc, to
-keep all the power and in-place tools, without reinventing the wheel.
-
-
- + **attributes**
-	- `shape` : `int[2]`
-	- `kind` : char
-
- + **methods**
-	- constructor and destructor
-	- `matvec`
-	- `matmat`
-	- etc.
-
-
-
 `Operator` (the core of the core)
 ==========
 
@@ -303,7 +281,13 @@ and different ways are possible,
   * only one `MatCreate` and `MatSetValue` calls a different
 	function per *block*
 
+Use a classical PETSc `Mat` format seems easier to let PETSc to
+distribute all the load.
 
+Moreover, PETSc and `MatSetValue` needs a *band*
+and it seems easier, once all the blocks are added,
+i.e. all the *global* and *local* are known to assembly in only one
+format, letting PETSc handles the distributgion.
 
  + **attributes**
 	- `shape` : `int[2]` size of the returned `Matrix`
@@ -325,7 +309,6 @@ and different ways are possible,
 	- `assemb`
 	- `update` : update the values of `shape` and `Shape`
 	- `diagonal` : get the diagonal blocks
-
 
 FourierAnalytical
 =================
@@ -408,6 +391,29 @@ or at least links need to be done.
 
 However, who is in charge to export a *vector* solution into a
 `pos/vtk` file ?
+
+
+`Matrix` / `Vector`
+==================
+
+`Mat` / `Vec` needs to be encapsulated into a class, in order to
+overload some basic arithmetic operation as `A*x`
+
+Basically, these objects are the matrix and the vector of PETSc, to
+keep all the power and in-place tools, without reinventing the wheel.
+
+
+ + **attributes**
+	- `shape` : `int[2]`
+	- `kind` : char
+
+ + **methods**
+	- constructor and destructor
+	- `matvec`
+	- `matmat`
+	- etc.
+
+
 
 
 Example
