@@ -96,7 +96,7 @@ class Operator:
     def assemb(self):
         self._update()
         ROW, COL = self.shape
-        Mat = np.zeros((ROW, COL))
+        Mat = np.empty((ROW, COL))
         for i in range(ROW):                
             for j in range(COL):
                 Mat[i, j] = self._coefOfblock(i, j)
@@ -138,3 +138,4 @@ Z.addBlock((0, 2), d)
 # Well done !!
 S = Z.assemb()
 ## S is a matrix 
+print(S)
