@@ -13,7 +13,7 @@ Therefore, N+1 domains are considered:
 Note that the N interior domains should be *empty*.
 
 In other words, in any case, let N *interfaces*.
-To each interface, some BIO are considered,
+To each interface, some BIO are considered, 
 and then we would like to solve a BIE.
 
 + BIE: Boundary Integral Equation
@@ -49,60 +49,10 @@ where the pointer `p` points to itself ;
 then the method `addBlock` populates this list.
 
 Once the population is satisfied, the method `assemb` launches the
-distribution and the assembly parts then return a `Matrix`.
+distribution and the assembly part then return a `Matrix`.
 
 
 [coo]: http://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_.28COO.29
-
-
-Structures of the Files
-=======================
-
-~~~
-    + doc/
-   	|  + blah.md
-    |  + tuto.md
-   	|  + etc...
-	|
-   	+ ex/   (and/or tests)
-    |  + mudiff/
-   	|  + stf/
-    |  + etc...
-	|
-    + py/
-    |  + SWIG-binding-for-later
-	|
-	+ src/
-	|
-    +--+ BIO/
-   	|  |
-	|  +--+ FourierAnalytic/
-	|  |     + Laplace/
-	|  |  	 + Helmholtz/
-	|  +--+ Spectral/
-    |  |     + Fourier/
-    |  |     + Tchebichef/
-    |  +--+ H/
-	|        + Laplace/
-	|   	 + Helmholtz/
-	|
-   	+--+ Common/
-   	|  |
-	|  +--+ Log
-	|     + Utils   (OverLayerPetsc)
-	|
-   	+--+ Core/
-	|  |
-	|  +--+ Operator / Function
-	|     + Trace
-    |     + TaskHandler
-    |     + Matrix / Vector
-   	|
-	+--+ Geom/
-          + GAnal/
-   	   	  + GParam/
-   	   	  + GMesh/
-~~~
 
 Structure
 =========
@@ -110,25 +60,30 @@ Structure
 More or less the oganization, and the details are given below.
 
 ~~~
-			 +----------------+	+----------+ +---------+
-		   	 |FourierAnalytic |	|Spectral  | |H        |
-		 /|\ |                |	|          | |         |  +---------------+
-		  |	 |                |	|          | |         |  |Common         |
-   	   	  |	 +----------------+	+----------+ +---------+  |               |
-   	   	  |	 +-----------------------------------------+  |               |
-coeff(n,m)|	 |BIO                                      |  |   + Log       |
-		  |	 +-----------------------------------------+  |   + Utils     |
-		  |	 +-------------------------++--------------+  |               |
-		  |	 | Core                    ||Geom          |  |               |
-		  |	 |                         ||              |  +---------------+
-		 \|/ |   + Operator / Function ||              |
-		   	 |   + Trace			   ||  + GAnal     |
-			 |   + TaskHandler		   ||  + GParam    |
-			 |   + Matrix / Vector     ||  + Gmesh     |
-			 |                         ||              |
-			 |                Trace <----->            |
-			 |                         ||              |
-			 +-------------------------++--------------+
+								+----++---+
+								|Tche||Fou|
+								|    ||   |
+							   	|    ||   |
+							   	+----++---+
+  +----------------------------++---------++--+
+  |FourierAnalytical           ||Spectral ||o |
+  |                            ||         ||t |
+  |  + singleLayerHelm_Fourier ||         ||h |
+  |  + doubleLayerHelm_Fourier ||         ||e |
+  |  + adjointLayerHelm_Fourier||         ||r |
+  |  + hyperLayerHelm_Fourier  ||         ||  |
+  |	 + projectFunction_Fourier ||  	   	  ||  |
+  +----------------------------++---------++--+
+  +-------------------------------------------+
+  |Core                                       |
+  |					  	   	   	   	   	   	  | +----------------+
+  |	- LinAlg   	   	   	   - Geom  	   	   	  |	|Log             |
+  |                     |                     |	|                |
+  |    + Operator       |     + Interface     |	|  nice print    |
+  |    + Matrix	        |     + TaskHandler   |	|  info (level)  |
+  |    + Vector         |      	   	   	      |	|                |
+  |                                           |	|                |
+  +-------------------------------------------+	+----------------+
 ~~~
 
 
@@ -139,37 +94,30 @@ A `ClassThatRocks` starts by upper letter.
 A `functionThatRocks` starts by lower letter.
 A list of items finished by `s` as `beers`.
 
-
-Common: `Log` / `Utils`
-======================
-
-A class mimicking the `Message` class of `GetDP`:
-also used to initialize and finalize.
-
-`Utils` encapsulates all the PETSc tools
+Thefore, maybe it could be nice to encapsulated all the PETSc tools
 that we need inside a `class` (and maybe a `namespace`)
-e.g. `MatCreate`, `matmul` etc.
-
 The advantages are: 1/ when the PETSc API changes, our update is
 easier, 2/ it is easy to change the matrix representation if we want
 to, i.e. only changing the `namespace` (useful for collaboration as
 Xavier) and 3/ this avoid to include all the *weird* PETSc types.
 
 
-`Geom`
-======
+`Log`
+=====
 
-On the top, let a empty class, with a string name.
-Then all the geometry derives from this class.
-This allows to write generic and easy maintainable code,
-keeping in mind other possibilities such as mesh (future).
+A class mimicking the `Message` class of `GetDP`.
 
-`Trace`
+
+`Interface` (other name?)
 ==========
 
-An *trace* represents the unknowns onto a `Geom`.
+An *interface* represents the geometrical interface,
+so it contains sort of parametrization etc.
+[**TODO**: think how to ? keep in mind mesh?]
 
-Note that `Trace` needs to have a numbering of the unknowns,
+For what we are interested in now, `Interface` is not so much relevant.
+
+Note that `Interface` needs to have a numbering of the unknowns,
 i.e a list (bijection) between the *modes*.
 Even if it seems not useful, the key point of this `dofHandler` is to
 manage the so prone error indexing.
@@ -179,29 +127,20 @@ interface, which seems useful for debugging purposes (or for guru hacks).
 
  + **attributes**
 	- `kind` : `char` not useful for now
-	- `geom` : pointer to `Geom`
    	- `size`: `int`
    	- `dofs` : `int[2M+1][2]` and by default (constructor),
 
 ~~~
    [-M,..., -1, 0, 1,..., M] <---> [0, 1,..., 2M+1]
 ~~~
-where 2M+1 corresponds to `size`.
+
 
  + **methods**
 	- constructor and destructor
 	- `setDofHandler` : `int[2M+1] |-> int[2M+1][2]`
 	it could be overloaded by the user.
 	- `getDofHandler`
-
-In $h$, `dofs` is the link between the nodes/elements numbering and
-the real numbering used.
-
-In *spectral*, `dofs` is the link between the "physical modes"
-numbering and the the real numbering used.
-
-
-
+	
 `TaskHandler`
 ============
 
@@ -217,13 +156,15 @@ Moreover, this object could contain an update to *who* is *where*.
 What I have in mind is: let assembly a mudiff matrix per block (one
 block per processus) and then let assembly the block diagonal
 preconditioner, the rebuilding is avoided.
+[**NOTE** don't know if it is useful, maybe this could be included in
+the `Matrix`]
 
-In other words, this class also manages the useful *copy*.
+**Not enough MPI knowledge, need to discuss.**
 
 
  + **attributes**
    - `loads` : `int[N+1][2]`
-
+   
  + **methods**
 	- constructor and destructor
 	- `setAssignInt2Proc`
@@ -231,14 +172,43 @@ In other words, this class also manages the useful *copy*.
 	- `getInterface` gives the MPI rank(s) associated to  a `Interface`
 
 
-**The key point is: let PETSc manages as possible as it is possible**
+`Matrix`
+============
 
-Note that how it is splitted between `TaskHandler` and `Operator` is
-not fully clear right now.
+`Mat` needs to be encapsulated into a class, in order to
+overload some basic arithmetic operation as `A*x`
+
+Basically, these objects are the matrix and the vector of PETSc, to
+keep all the power and in-place tools, without reinventing the wheel.
 
 
-`Operator` (the core of the core)
-==========
+ + **attributes**
+	- `shape` : `int[2]`
+	- `kind` : char
+	
+ + **methods**
+	- constructor and destructor
+	- `matvec`
+	- `matmat`
+	- etc.
+
+`Vector`
+============
+
+`Vector` is only `Vec` plus maybe some metadata
+i.e. the PETSc's vectors encapsulated into a class.
+
+
+ + **attributes**
+ 	- `shape` : `int`
+	- `kind` : char
+
+ + **methods**
+	- constructor and destructor
+	- operations with vector
+
+`Operator`
+============
 
 It should only and simply be a layer on the top of the matrices of PETSc,
 i.e., a nice handler and common interaction of matrices, but to be
@@ -248,6 +218,10 @@ clear `Operator` acts only on the `pointer` level.
 
 Moreover, it is the same object that manages all the matrices.
 Therefore, it is a *big* object.
+
+In other word, until the method `addBlock` is called, the behaviour is
+the *classical* behaviour, i.e. the one of we have naturally in mind.
+To be clear, it is one block.
 
 Then, if the method `addBlock` is called, there is two options, switch to
 
@@ -266,28 +240,24 @@ method is called, all the memory and computations are launched;
 i.e.,
 
  1. performs from `rank0` the organization
- (or everybody works
- 	 and organizes the same things instead of waiting
-	 and so this avoids some message passing)
- 
  2. launches, which means (more or less)
 	   + `MatCreate`
 	   + `MatSetValue`
-
-and different ways are possible,
-
-  * a `MatCreate` per *block* and then the PETSc block
+	  and different ways are possible,
+	     * a `MatCreate` per *block* and then the PETSc block
 	feature
-  * only one `MatCreate` and `MatSetValue` calls a different
+	     * only one `MatCreate` and `MatSetValue` calls a different
 	function per *block*
 
-Use a classical PETSc `Mat` format seems easier to let PETSc to
-distribute all the load.
+What is not clear for me is :
 
-Moreover, PETSc and `MatSetValue` needs a *band*
-and it seems easier, once all the blocks are added,
-i.e. all the *global* and *local* are known to assembly in only one
-format, letting PETSc handles the distributgion.
+ - if a BIE is composed by only one BIO
+ then we would like to compute it using all the processes available
+ - if a BIE is composed by several BIOs
+ then we would like to compute them using all the processes available
+
+**That's why from my point of view, we need a `TaskHandler` to
+  distribute in a nice and easy way the load.**
 
  + **attributes**
 	- `shape` : `int[2]` size of the returned `Matrix`
@@ -295,16 +265,16 @@ format, letting PETSc handles the distributgion.
 	and create a `struct` s.t. (row, col, val).
 	with a nice list *appending*.
 	Or
-		+ `cols` : list of integer
-		+ `rows` : list of integer
+		+ `cols` : list of integer 
+		+ `rows` : list of integer 
 		+ `vals` : list of `Operator` pointer
 
 	- `Shape` : `int[2]` size block structure
-
+	
  + **methods**
 	- constructor and destructor
 	- `setValue` : function that feeds the '`PetscScalar values[]`'
-	field inside the function `MatSetValue`.
+	field inside the function `MatSetValue`. 
 	- `addBlock`
 	- `assemb`
 	- `update` : update the values of `shape` and `Shape`
@@ -322,7 +292,6 @@ Operator adjointLayerHelm_Fourier(Interface test, Interface trial, wavenumber)
 Operator hyperLayerHelm_Fourier(Interface test, Interface trial, wavenumber)
 ~~~
 
-Inside them, they fill the `coeff` function of an `Operator`.
 
 Why `(test, trial)` and not `(trial, test)` ?
 ---------------------------------------------
@@ -340,23 +309,12 @@ and the trial-function correspond to the column.
 
 
 Still remains ?
-===============
+---------------
 
-**How to create the Right-Hand Side ?**
-
-In other words, a question remains: what does `projectFunction_Fourier` return ?
+A question remains: what does `projectFunction_Fourier` return ?
 especially in the context of block matrix.
 
-There is two solutions:
-
- 1. add an object `Function`
- 2. add a method to `Trace` to project onto.
-
-
-`Function`
----------
-
-A solution should be to add a `Fucntion` class, which
+Maybe, the best solution should be to add a `Fucntion` class, which
 represents a vector, as `Operator` represents a matrix.
 
 
@@ -382,40 +340,6 @@ typedef struct{
 ~~~
 
 
-`Trace.project`
---------------
-
-Do not know if it is a good solution.
-Because information need to be added to `Trace`,
-or at least links need to be done.
-
-However, who is in charge to export a *vector* solution into a
-`pos/vtk` file ?
-
-
-`Matrix` / `Vector`
-==================
-
-`Mat` / `Vec` needs to be encapsulated into a class, in order to
-overload some basic arithmetic operation as `A*x`
-
-Basically, these objects are the matrix and the vector of PETSc, to
-keep all the power and in-place tools, without reinventing the wheel.
-
-
- + **attributes**
-	- `shape` : `int[2]`
-	- `kind` : char
-
- + **methods**
-	- constructor and destructor
-	- `matvec`
-	- `matmat`
-	- etc.
-
-
-
-
 Example
 =======
 
@@ -426,3 +350,4 @@ Example
 
 
 * * *
+
