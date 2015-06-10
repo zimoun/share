@@ -29,6 +29,9 @@ Propositions
   		   or "Boundary Element Method As Draft"
   		   or "BEer Music And coDe; etc.
 
+5. PINTE : Petsc INTegral Equation
+6. Fries : FRamework for Integral EquationS
+
 
 Old
 ===
