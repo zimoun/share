@@ -3,7 +3,17 @@
 Propositions
 ============
 
-- PETSc &amp; BIM!:
+
+1. "EinBier" 
+  for 
+  *Easy INtegration 
+  of Boundary Integral Equation 
+  for Research*
+
+2. PETScie
+
+
+3. PETSc &amp; BIM!:
   *Portable, Extensible Toolkit for Scientific Computation
   and
   Boundary Integral Methods*
@@ -15,7 +25,7 @@ Propositions
   or "PArallel Boundary Operators"
   etc.
 
-- `bemad`: *Boundary Element Method And Derivatives*
+4. `bemad`: *Boundary Element Method And Derivatives*
   		   or "Boundary Element Method As Draft"
   		   or "BEer Music And coDe; etc.
 
