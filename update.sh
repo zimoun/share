@@ -1,4 +1,5 @@
-printf "test $TRAVIS_PULL_REQUEST $TRAVIS_BUILD_NUMBER"
+printf "test $TRAVIS_PULL_REQUEST $TRAVIS_BUILD_NUMBER\n"
+
 #if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update test-travis repo\n"
 ls
@@ -25,5 +26,5 @@ ls
   git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
   git push -fq origin master > /dev/null
 
-  echo -e "Done magic with coverage\n"
+  echo -e "Done in $TRAVIS_OS_NAME\n"
 #fi

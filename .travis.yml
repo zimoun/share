@@ -1,8 +1,10 @@
 language: python
 python:
   - "2.7"
-  - "3.4"
-  - "nightly"
+
+os:
+  - linux
+  - osx
 
 install:
   - pip install numpy
@@ -14,11 +16,10 @@ before_script:
 
 script:
   - pandoc -N name.md --latex-engine=pdflatex -o name.pdf
+  - pandoc -N structure.md --latex-engine=pdflatex -o structure.pdf
   - python --version
-  - python py-ex/ex.py
   - cat ./update.sh
-  - ls -l ./update
-  - ./update.sh
+  - ls -l ./update.sh
 
 after_success:
   - ./update.sh
