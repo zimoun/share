@@ -7,19 +7,17 @@ os:
   - osx
 
 install:
-  - pip install numpy
-
-before_script:
   - sudo apt-get update -q
   - sudo apt-get install pandoc
   - sudo apt-get install texlive-latex-base
+  - sudo apt-get install texlive-latex-recommended
 
+before_script:
+  - python --version
+ 
 script:
   - pandoc -N name.md --latex-engine=pdflatex -o name.pdf
   - pandoc -N structure.md --latex-engine=pdflatex -o structure.pdf
-  - python --version
-  - cat ./update.sh
-  - ls -l ./update.sh
 
 after_success:
   - ./update.sh
