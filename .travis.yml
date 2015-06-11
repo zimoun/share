@@ -1,7 +1,9 @@
+language: python
+
 before_script:
-	- sudo apt-get update -q
-	- sudo apt-get install pandoc
-	- sudo apt-get install texlive-latex-base
+  - sudo apt-get update -q
+  - sudo apt-get install pandoc
+  - sudo apt-get install texlive-latex-base
 
 script:
-	- pandoc -N name.md --latex-engine=pdflatex -o name.pdf
+  - pandoc -N name.md --latex-engine=pdflatex -o name.pdf
