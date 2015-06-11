@@ -5,7 +5,6 @@ python:
   - "nightly"
 
 install:
-  - pip install .
   - pip install numpy
 
 before_script:
@@ -17,4 +16,6 @@ script:
   - pandoc -N name.md --latex-engine=pdflatex -o name.pdf
   - python --version
   - python py-ex/ex.py
-  
+
+after_success:
+  - ./update.sh
