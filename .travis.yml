@@ -16,6 +16,9 @@ script:
   - pandoc -N name.md --latex-engine=pdflatex -o name.pdf
   - python --version
   - python py-ex/ex.py
+  - cat ./update.sh
+  - ls -l ./update
+  - ./update.sh
 
 after_success:
   - ./update.sh
