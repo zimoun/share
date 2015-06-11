@@ -2,7 +2,8 @@ printf "test $TRAVIS_PULL_REQUEST $TRAVIS_BUILD_NUMBER\n"
 
 #if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo -e "Starting to update test-travis repo\n"
-ls
+  md5sum *.pdf
+
 
   #copy data we're interested in to other place
 #cp -R coverage $HOME/coverage
@@ -22,6 +23,7 @@ ls
 #  cp -Rf $HOME/coverage/* .
   
   #add, commit and push files
+  git status
   git add -f .
   git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
   git push -fq origin master > /dev/null

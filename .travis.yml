@@ -18,6 +18,7 @@ before_script:
 script:
   - pandoc -N name.md --latex-engine=pdflatex -o name.pdf
   - pandoc -N structure.md --latex-engine=pdflatex -o structure.pdf
+  - pandoc -N to-talk.md --latex-engine=pdflatex -o to-talk.pdf
 
 after_success:
   - ./update.sh
