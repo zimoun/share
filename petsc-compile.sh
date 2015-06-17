@@ -22,4 +22,5 @@ make PETSC_DIR=$HOME/petsc-3.6.0 PETSC_ARCH=linux_complex all
 make PETSC_DIR=$HOME/petsc-3.6.0 PETSC_ARCH=linux_complex test
 make PETSC_DIR=$HOME/petsc-3.6.0 PETSC_ARCH=linux_complex streams NPMAX=4
 
+pwd
 cd $HOME

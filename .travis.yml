@@ -4,6 +4,7 @@ compiler:
 
 install:
   - travis_wait ./cmake-compile.sh
+  - travis_wait ./petsc-compile.sh
 
 script:
    - ls -l
