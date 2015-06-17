@@ -8,5 +8,8 @@ cd cmake-3.2.3/
 
 ./bootstrap && make -j 4
 
+bin/cmake --version
+
+pwd
 cd $HOME
-return 0
+ls -rtl
