@@ -15,6 +15,7 @@ export PETSC_ARCH=linux_complex
 --with-clanguage=cxx \
 --with-shared-libraries=1 \
 --with-x=0 \
+--download-blacs=1 \
 --download-mpich=1 \
 --with-debugging=0
 
@@ -24,3 +25,4 @@ make PETSC_DIR=$HOME/petsc-3.6.0 PETSC_ARCH=linux_complex streams NPMAX=4
 
 pwd
 cd $HOME
+ls -l

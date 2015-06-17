@@ -9,6 +9,3 @@ install:
 script:
    - ls -l
    - $HOME/cmake-3.2.3/bin/cmake --version
-   - cd $HOME/cmake-3.2.3/bin/
-   - ls -l
-   - ./cmake --version
