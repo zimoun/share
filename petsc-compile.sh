@@ -3,8 +3,8 @@
 cd $HOME
 
 mkdir -p petsc/ && cd petsc/
-wget -q http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.0.tar.gz
-tar -xz petsc-3.6.0.tar.gz
+wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.0.tar.gz
+tar -xzvf petsc-3.6.0.tar.gz
 cd petsc-3.6.0/
 
 export PETSC_DIR=$PWD
@@ -13,15 +13,10 @@ export PETSC_ARCH=linux_complex
 ./configure \
 --with-scalar-type=complex \
 --with-clanguage=cxx \
---with-shared-libraries=0 \
+--with-shared-libraries=1 \
 --with-x=0 \
---download-mumps=1 \
---download-parmetis=1 \
 --download-openmpi=0 \
---download-scalapack=1 \
 --download-blacs=1 \
---download-suitesparse=1 \
---download-metis=1 \
 --with-debugging=0
 
 
