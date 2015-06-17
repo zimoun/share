@@ -3,8 +3,8 @@ compiler:
   - gcc
 
 install:
-  - cmake-compile.sh
-  - petsc-compile.sh
+  - ./cmake-compile.sh
+  - ./petsc-compile.sh
 
 script:
    - cmake-3.2.3/bin/cmake --version
