@@ -1,18 +1,10 @@
-language: python
-python:
-  - "2.7"
-
-os:
-  - linux
-  - osx
+language: cpp
+compiler:
+  - gcc
 
 install:
-  - cmake --version
-  - sudo apt-get update -q
-  - sudo apt-get install cmake
+  - cmake-compile.sh
+  - petsc-compile.sh
 
-before_script:
-  - cmake --version
- 
 script:
-   - gcc --version
+   - cmake-3.2.3/bin/cmake --version
