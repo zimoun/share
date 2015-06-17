@@ -2,9 +2,10 @@ language: cpp
 compiler:
   - gcc
 
+sudo: required
+
 install:
   - apt-get update -q
-  - apt-get install 
   - travis_wait ./cmake-compile.sh
   - travis_wait ./petsc-compile.sh
 
