@@ -2,10 +2,14 @@ language: cpp
 compiler:
   - gcc
 
+sudo: required
+
 install:
-  - travis_wait ./cmake-compile.sh
+  - sudo apt-get update -q
+  - sudo apt-get install gfortran
   - travis_wait ./petsc-compile.sh
 
 script:
    - ls -l
    - $HOME/cmake-3.2.3/bin/cmake --version
+   - gfortran --version
