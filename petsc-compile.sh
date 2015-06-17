@@ -16,9 +16,8 @@ export PETSC_ARCH=linux_complex
 --with-shared-libraries=1 \
 --with-x=0 \
 --download-fblaslapack=1 \
+--download-mpich=1 \
 --with-debugging=0
-
-#--download-mpich=1 \
 
 
 make PETSC_DIR=$HOME/petsc-3.6.0 PETSC_ARCH=linux_complex all
