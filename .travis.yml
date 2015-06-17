@@ -7,18 +7,12 @@ os:
   - osx
 
 install:
+  - cmake --version
   - sudo apt-get update -q
-  - sudo apt-get install pandoc
-  - sudo apt-get install texlive-latex-base
-  - sudo apt-get install texlive-latex-recommended
+  - sudo apt-get install cmake
 
 before_script:
-  - python --version
+  - cmake --version
  
 script:
-  - pandoc -N name.md --latex-engine=pdflatex -o name.pdf
-  - pandoc -N structure.md --latex-engine=pdflatex -o structure.pdf
-  - pandoc -N to-talk.md --latex-engine=pdflatex -o to-talk.pdf
-
-after_success:
-  - ./update.sh
+   - gcc --version
