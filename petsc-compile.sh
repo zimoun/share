@@ -15,8 +15,7 @@ export PETSC_ARCH=linux_complex
 --with-clanguage=cxx \
 --with-shared-libraries=1 \
 --with-x=0 \
---download-openmpi=0 \
---download-blacs=1 \
+--download-mpich=1 \
 --with-debugging=0
 
 
