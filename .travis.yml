@@ -2,12 +2,12 @@ language: cpp
 compiler:
   - gcc
 
-sudo: required
-
 install:
-  - sudo apt-get update -q
   - travis_wait ./cmake-compile.sh
-  - travis_wait ./petsc-compile.sh
 
 script:
-   - cmake-3.2.3/bin/cmake --version
+   - ls -l
+   - $HOME/cmake-3.2.3/bin/cmake --version
+   - cd $HOME/cmake-3.2.3/bin/
+   - ls -l
+   - ./cmake --version
