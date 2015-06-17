@@ -3,7 +3,7 @@
 cd $HOME
 
 wget http://www.cmake.org/files/v3.2/cmake-3.2.3.tar.gz
-tar -xzv cmake-3.2.3.tar.gz
+tar -xzvf cmake-3.2.3.tar.gz > untar.cmake
 cd cmake-3.2.3/
 
 ./bootstrap && make -j 4
