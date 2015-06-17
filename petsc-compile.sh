@@ -2,7 +2,6 @@
 
 cd $HOME
 
-mkdir -p petsc/ && cd petsc/
 wget http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-3.6.0.tar.gz
 tar -xzf petsc-3.6.0.tar.gz
 cd petsc-3.6.0/
