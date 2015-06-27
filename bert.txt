@@ -1,0 +1,164 @@
+
+
+
+
+        Operator
+                                 Trace    Geom
+A = [
+     [ Vaa, Vab, Vac, Vad ],      [xa]  } 1
+     [ Vba, Vbb, Vbc, Vbd ],      [xb]  } 1
+     [ Vca, Vcb, Vcc, Vcd ],      [xc]  } 2
+     [ Vda, Vdb, Vdc, Vdd ],      [xd]  } 2
+     ]
+
+------------------------------------------
+                  test    trial
+Vaa = BIOsingle(Trace_1, Trace_1)
+Vac = BIOsingle(Trace_1, Trace_2)
+
+
+A.addBlock(0, 0, Vaa)
+A.addBlock(0, 2, Vac)
+
+D = A.diag();
+------------------------------------------
+
+
+A.addBlock(0, 0, "V")
+A.addBlock(0, 2, "V")
+
+D = A.diag();
+
+L.listTrace( {Trace_1_a, Trace_1_b, Trace_2_c, Trace_2_d} )
+L.setMatrix(A)
+
+Mat_cb = L.get(3, 2)
+
+------------------------------------------
+
+
+MTF = [
+[A0, X01, X02],            [y0]     1+2
+[X10, A1, X12],            [y1]     1
+[X20, X21, A2],            [y2]     2
+]
+
+A0 similar to A
+
+A0 : k0
+A1: k1
+A2: k2
+
+
+y0 = [y01]  1
+[y02]  2
+
+y01= [xa, xb]
+
+Ai = [-K, V ; W, Q]
+
+K1 = BIOdouble(Trace_1, Trace_1)
+
+A1.addBlock(0, 0, -K1)
+A1.addBlock(0, 1, V1)
+
+A2.addBlock(0, 0, -K2)
+A2.addBlock(0, 1, V2)
+
+MTF.addBlock(1, 1, A1)
+MTF.addBlock(2, 2, A2)
+
+---------------------------
+
+Trace_i : Geom + Params Physique (ki)
+
+LinSys LinMTF;
+NewOperator MTF;
+NewOperator Cald;
+NewOperator Cald2;
+
+LinMTF.litsTrace( {Trace_0 , Trace_0
+                  Trace_1 , Trace_1
+                  Trace_2, Trace_2 } )
+
+Cald.addBlock(0, 0, "-K")
+Cald.addBlock(0, 1, "V")
+
+Cald2 = 2*Cald + Cald;
+
+MTF.addBlock(0, 0, Cald)
+MTF.addBlock(1, 1, Cald)
+
+LinMTF.setOp(MTF)
+
+Mat = LinMTF.Assemble()
+
+--------------------------------
+
+Trace_i : Geom + Params Physique (ki)
+
+LinSys LinMTF;
+NewOperator MTF;
+NewOperator Cald;
+NewOperator Cald2;
+
+Super_Trace_0 = {Trace_0_a, Trace0_b, Trace_0_c, Trace_0_d}
+Super_Trace_1 = {Trace_1_a, Trace_1_b}
+
+LinMTF.litsTrace( {Super_Trace_0
+                   Super_Trace_1
+                   Trace_2, Trace_2 } )
+
+Cald.addBlock(0, 0, "-K")
+Cald.addBlock(0, 1, "V")
+
+Cald2 = 2*Cald + Cald;
+
+Cald2 = (-2*K + K) --> getValue(i, j)
+
+MTF.addBlock(0, 0, Cald)
+MTF.addBlock(1, 1, Cald)
+
+LinMTF.setOp(MTF)
+
+
+Mat = LinMTF.Assemble()  // getValue(i, j)
+
+
+-----
+LinSys myA0;
+
+myA0 = LinMTF.getBlock(0, 0) --> [ A0 ]
+LinMTF.getBlock_full(0, 0) --> [ A0 0, 0 ; 0, 0, 0; 0, 0, 0 ]
+
+LinMTF.diag() --> [A0; A1; A2]  // Matrice ?
+----
+LinMTF.diag() --> [A0; A1; A2]  // LinSys ?
+
+
+
+--------
+Bier // Operator
+Barman // LinSys
+
+-------------------------------
+
+Mask Matrix
+
+LinSys
+  Trace/Trace
+    + K  isBuild ?
+    + V    "
+    + W    "
+    + Q
+
+
+
+A = [
+    [ a, b, b, b ],      [xa]  } 1
+    [ c, c, c ,c ],      [xb]  } 1
+    [ a, a, a, a ],      [xc]  } 2
+    [ a, a, a+b+c, a ],      [xd]  } 2
+
+    a, b
+    c, d
