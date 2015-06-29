@@ -19,7 +19,7 @@ parlé.
 J'essaie de résumer nos idées et ce que nous voulons.
 
 1 / Qu'est-ce que nous voulons/aimerions ?
-===============================
+==========================================
 
 Quand je réfléchis à nos discussions, je me dis que nous voulons
 quelque chose qui fait tout, sans vraiment séparer les couches, les
@@ -31,7 +31,8 @@ Pour moi, il y a 2 couches distinctes:
 
 
 -a- Manipulation de matrices par bloc
-------------------------------------------------------
+-------------------------------------
+
 Je veux un outil qui me permet d'ajouter, récupérer etc. des blocs
 dans une matrice sans me soucier des indices.
 
@@ -72,7 +73,7 @@ comment définir l'addition de fonctions ? ou la composition
 
 
 -b- Constructions des opérateurs intégraux (ou autres)
---------------------------------------------------------------
+------------------------------------------
 
 C'est une manière d'obtenir des blocs élémentaires.
 
@@ -91,7 +92,7 @@ Et de même comment gérer des opérations arithmétiques sur des
 
 
 2/ Propositions -- très grossières
-========================
+==================================
 
 Nous pensons à des formulations faibles, où il ya des fonctions trials
 et des fonctions tests.
@@ -202,6 +203,7 @@ E) Illustrations
 Imaginons que l'on souhaite construire la "matrice/opérateur"
 (assez proche d'un MTF 2 domaines, en remplaçant V par du Caldéron)
 
+~~python
 A = 2*[
         [ Vaa, Vab,  5*X,  0 ]  [ua]
         [ Vba, Vbb,    0,  0 ]  [ub]
@@ -212,7 +214,7 @@ A = 2*[
 
 # choix 2:
 
-Inconnue contient uniquement Trial ou Test
+##Inconnue contient uniquement Trial ou Test
 
 
                              trial       test
@@ -249,7 +251,7 @@ Matrix A = (C+C).assemble()
 
 # choix 1-a:
 
-Inconnue contient Trial+Test
+##Inconnue contient Trial+Test
 
 Bier V;
 V.kind(SingleLayer)
@@ -274,7 +276,7 @@ D.setBlock(0, 1, Id) // missing 5* ??
 D.setBlock(2, 1, Id)
 
 Matrix A = (D+D).assemble()
-
+~~
 
 Pour résumer:
 =============
@@ -319,3 +321,6 @@ Les opérateurs intégraux en dérivent, c'est la terminaison de la
 
  - un objet "système linéaire" qui gère de façon transparente les
    "opérateur"s en connaissant: les "produit de dualité" et la struture
+
+
+to finish...
