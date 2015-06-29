@@ -203,7 +203,7 @@ E) Illustrations
 Imaginons que l'on souhaite construire la "matrice/opérateur"
 (assez proche d'un MTF 2 domaines, en remplaçant V par du Caldéron)
 
-~~python
+~~~python
 A = 2*[
         [ Vaa, Vab,  5*X,  0 ]  [ua]
         [ Vba, Vbb,    0,  0 ]  [ub]
@@ -276,7 +276,7 @@ D.setBlock(0, 1, Id) // missing 5* ??
 D.setBlock(2, 1, Id)
 
 Matrix A = (D+D).assemble()
-~~
+~~~
 
 Pour résumer:
 =============
@@ -324,3 +324,11 @@ Les opérateurs intégraux en dérivent, c'est la terminaison de la
 
 
 to finish...
+
+
+C++ vs Python
+-------------
+
+Les quelques tests avec petsc4py ne m'ont pas convaincu...
+
+
