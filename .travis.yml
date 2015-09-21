@@ -6,11 +6,11 @@ sudo: required
 
 install:
   - sudo apt-get update -q
-  - sudo apt-get install gfortran
-  - travis_wait ./petsc-compile.sh
-  - travis_wait ./cmake-compile.sh
+  - sudo apt-get install gmsh
 
 script:
-   - ls -l
-   - $HOME/cmake-3.2.3/bin/cmake --version
-   - gfortran --version
+  - gmsh --version
+  - gmsh sphere.geo -
+
+after_sucess:
+  - ./mesh.sh
